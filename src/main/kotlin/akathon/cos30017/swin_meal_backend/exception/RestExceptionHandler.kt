@@ -12,4 +12,10 @@ class RestExceptionHandler {
         val errorMsg = mapOf("message" to ex.message)
         return ResponseEntity.badRequest().body(errorMsg)
     }
+
+    @ExceptionHandler(WrongLoginCredentialsException::class)
+    fun handleWrongLoginCredentialsException(ex: WrongLoginCredentialsException): ResponseEntity<Any> {
+        val errorMsg = mapOf("message" to ex.message)
+        return ResponseEntity.badRequest().body(errorMsg)
+    }
 }
