@@ -11,6 +11,5 @@ data class Customer(
     var age: Int?,
     var height: Float?,
     var weight: Float?,
-    var job: String?,
     var activityLevel: String?
 )

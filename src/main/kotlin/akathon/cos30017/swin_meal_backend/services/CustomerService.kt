@@ -26,4 +26,9 @@ class CustomerService(private val customerRepository: CustomerRepository) {
         }
         return ResponseEntity.ok("Login successful")
     }
+
+    fun getCustomerProfile(email: String) : ResponseEntity<Any>{
+        val customer = customerRepository.getCustomerData(email)
+        return ResponseEntity.ok(customer)
+    }
 }

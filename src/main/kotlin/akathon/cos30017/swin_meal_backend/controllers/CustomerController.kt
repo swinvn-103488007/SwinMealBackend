@@ -28,4 +28,9 @@ class CustomerController(private val customerService: CustomerService) {
 
         return customerService.validateLoginRequest(email, password)
     }
+
+    @GetMapping("/getProfile")
+    fun getCustomerProfile(@RequestParam email: String) : ResponseEntity<Any> {
+       return customerService.getCustomerProfile(email)
+    }
 }

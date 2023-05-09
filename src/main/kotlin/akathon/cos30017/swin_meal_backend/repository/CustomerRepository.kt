@@ -8,18 +8,19 @@ import java.nio.file.Paths
 
 @Repository
 class CustomerRepository {
+
     @Value("\${astra.keyspace}")
     private lateinit var keyspace: String
-
+    private val defaultPassword = "default"
     private var session = CqlSession.builder()
         .withCloudSecureConnectBundle(Paths.get("E:/spring2023/connection_bundles/secure-connect-swinmealdb.zip"))
         .withAuthCredentials("AcRCBgaqoLkRzpruuQKQWpdS", "lXLR2SszZgnO4JiF,,ugKfELqmXwP74jR4_-Qq-T,f9P4OKRnoWeB0zOos,T0qg0+85KcW3MUdmZY1Zj3sC4x3dSTZZM8vXz0Ki08J_R4MHfQS9rGHR8twLI7NWfql2Q")
         .build()
 
     fun addNewCustomer(customer: Customer) {
-        val query = "INSERT INTO ${keyspace}.customer_by_uuid(email,id,password,name,activity_level,age,gender,height,job,weight)" +
+        val query = "INSERT INTO ${keyspace}.customer_by_uuid(email,id,password,name,activity_level,age,gender,height,weight)" +
                 "VALUES ('${customer.email}', ${customer.id}, '${customer.password}','${customer.name}','${customer.activityLevel}'," +
-                "${customer.age}, '${customer.gender}', ${customer.height}, '${customer.job}', ${customer.weight})"
+                "${customer.age}, '${customer.gender}', ${customer.height}, ${customer.weight})"
         session.execute(query)
     }
 
@@ -36,10 +37,21 @@ class CustomerRepository {
         val matchedCustomer = rs.one()
 
         // Debug message
-        println("Customer email: ${matchedCustomer?.getString("email")}")
-        println("Customer uuid: ${matchedCustomer?.getString("password")}" )
+//        println("Customer email: ${matchedCustomer?.getString("email")}")
+//        println("Customer uuid: ${matchedCustomer?.getString("password")}" )
 
         return (matchedCustomer?.getString("email").equals(email)
                 && matchedCustomer?.getString("password").equals(password))
+    }
+
+    fun getCustomerData(email: String) : Customer{
+        val query = "SELECT * from ${keyspace}.customer_by_uuid where email='${email}' ALLOW FILTERING"
+        val rs = session.execute(query)
+        val firstRow = rs.one()
+        return Customer(firstRow?.getUuid("id")!!, firstRow.getString("email")!!,
+                        defaultPassword, firstRow.getString("name"),
+                        firstRow.getString("gender"), firstRow.getInt("age"),
+                        firstRow.getFloat("height"), firstRow.getFloat("weight"),
+                        firstRow.getString("activity_level"))
     }
 }
