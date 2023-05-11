@@ -31,4 +31,11 @@ class CustomerService(private val customerRepository: CustomerRepository) {
         val customer = customerRepository.getCustomerData(email)
         return ResponseEntity.ok(customer)
     }
+
+    fun editHealthProfile(email: String, gender:String, age: Int,
+                          height: Float, weight: Float, activityLevel: String) : ResponseEntity<Any>
+    {
+        customerRepository.updateCustomerHealthData(email, gender, age, height, weight, activityLevel)
+        return ResponseEntity.ok("Health Profile updated")
+    }
 }

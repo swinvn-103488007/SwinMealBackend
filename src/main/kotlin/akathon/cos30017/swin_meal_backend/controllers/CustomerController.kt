@@ -33,4 +33,12 @@ class CustomerController(private val customerService: CustomerService) {
     fun getCustomerProfile(@RequestParam email: String) : ResponseEntity<Any> {
        return customerService.getCustomerProfile(email)
     }
+
+    @GetMapping("/editHealthProfile")
+    fun editHealthProfile(@RequestParam email: String, @RequestParam gender: String,
+                          @RequestParam age: Int, @RequestParam height: Float,
+                          @RequestParam weight: Float, @RequestParam activityLevel: String) : ResponseEntity<Any>
+    {
+        return customerService.editHealthProfile(email, gender, age, height, weight, activityLevel)
+    }
 }
