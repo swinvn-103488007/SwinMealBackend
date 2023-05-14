@@ -19,11 +19,11 @@ class MenuRepository() {
             .build()
 
     fun getAllMenu() : List<MenuItem> {
-        val query = "SELECT * FROM $keyspace.menu"
+        val query = "SELECT * FROM $keyspace.menu_full"
         val rs =  session.execute(query)
         return rs.map{ row ->
             MenuItem(
-                row.getString("id"),
+                row.getInt("id"),
                 row.getString("img"),
                 row.getString("name"),
                 row.getFloat("price"),

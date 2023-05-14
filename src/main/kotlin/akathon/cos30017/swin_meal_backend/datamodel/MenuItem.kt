@@ -1,7 +1,7 @@
 package akathon.cos30017.swin_meal_backend.datamodel
 
 data class MenuItem(
-    var itemID: String?,
+    var itemID: Int,
     var imageUrl: String?,
     var itemName: String?,
     var itemPrice: Float?,

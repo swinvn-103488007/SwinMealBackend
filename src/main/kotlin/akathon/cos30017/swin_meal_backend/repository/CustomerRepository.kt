@@ -4,6 +4,7 @@ import akathon.cos30017.swin_meal_backend.datamodel.Customer
 import com.datastax.oss.driver.api.core.CqlSession
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Repository
+import java.net.URL
 import java.nio.file.Paths
 
 @Repository
