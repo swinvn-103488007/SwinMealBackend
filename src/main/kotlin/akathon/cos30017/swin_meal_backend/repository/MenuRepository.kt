@@ -30,6 +30,10 @@ class MenuRepository() {
                 row.getString("dsc"),
                 row.getString("category"),
                 row.getFloat("rate"),
+                row.getFloat("calories"),
+                row.getFloat("protein"),
+                row.getFloat("carbohydrate"),
+                row.getFloat("fat")
             )
         }.toList()
     }
