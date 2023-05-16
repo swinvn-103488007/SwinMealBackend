@@ -22,8 +22,8 @@ class OrderService(private val orderRepository: OrderRepository) {
         return ResponseEntity.ok("New order saved")
     }
 
-    fun getAllOrderHistory(custEmail: String): ResponseEntity<Any> {
-        return ResponseEntity.status(HttpStatus.OK).body(orderRepository.getAllOrderHistory(custEmail))
+    fun getAllOrderHistory(custEmail: String): List<OrderHistoryItem> {
+        return orderRepository.getAllOrderHistory(custEmail)
     }
 
     fun handleOrderMarkAsReceived(custEmail: String, orderId: String): ResponseEntity<Any> {
@@ -35,8 +35,20 @@ class OrderService(private val orderRepository: OrderRepository) {
         }
         return ResponseEntity.ok("Food Received Update")
     }
+    fun getAllCurrentOrder(custEmail: String): List<CurrentOrderItem> {
+        return orderRepository.getAllCurrentOrder(custEmail)
+    }
 
-    fun getAllCurrentOrder(custEmail: String): ResponseEntity<Any> {
-        return ResponseEntity.status(HttpStatus.OK).body(orderRepository.getAllCurrentOrder(custEmail))
+    fun handleOrderCancel(custEmail: String, orderId: String) {
+        try{
+            orderRepository.deleteReceivedFromCurrentOrder(custEmail,orderId)
+            orderRepository.markOrderHistoryAsCancel(custEmail,orderId)
+        } catch (e: Exception) {
+            // Handle exception
+        }
+    }
+
+    fun deleteHistoryData(custEmail: String, orderId: String) {
+        return orderRepository.deleteHistoryData(custEmail,orderId)
     }
 }

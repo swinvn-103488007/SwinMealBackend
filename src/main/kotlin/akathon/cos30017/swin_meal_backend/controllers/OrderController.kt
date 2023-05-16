@@ -21,7 +21,7 @@ class OrderController(private val orderService: OrderService) {
     }
 
     @GetMapping("/order-history")
-    fun getOrderHistoryList(@RequestParam email: String): ResponseEntity<Any> {
+    fun getOrderHistoryList(@RequestParam email: String): List<OrderHistoryItem> {
         return orderService.getAllOrderHistory(email)
     }
 
@@ -31,7 +31,17 @@ class OrderController(private val orderService: OrderService) {
     }
 
     @GetMapping("/current-order")
-    fun getCurrentOrderList(@RequestParam email: String): ResponseEntity<Any> {
+    fun getCurrentOrderList(@RequestParam email: String): List<CurrentOrderItem> {
         return orderService.getAllCurrentOrder(email)
+    }
+
+    @DeleteMapping("/order-cancel")
+    fun handleOrderCancel(@RequestParam email: String, @RequestParam orderId: String) {
+        return orderService.handleOrderCancel(email, orderId)
+    }
+
+    @DeleteMapping("/history-delete")
+    fun deleteHistoryData(@RequestParam email: String, @RequestParam orderId: String) {
+        return orderService.deleteHistoryData(email, orderId)
     }
 }

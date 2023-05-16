@@ -45,6 +45,11 @@ class OrderRepository {
         session.execute(query)
     }
 
+    fun deleteHistoryData(custEmail: String, orderId: String) {
+        val query = "DELETE FROM ${keyspace}.order_by_customer WHERE cust_email='$custEmail' AND order_id='$orderId'"
+        session.execute(query)
+    }
+
     fun addNewCurrentOrder(custEmail: String, custName: String, item: CurrentOrderItem) {
         val query = "INSERT INTO ${keyspace}.current_order_by_customer(cust_email,cust_name," +
                 "item_name,item_quantity,order_id,payment_status,total_price,tax,sub_total,take_away_time) " +
@@ -72,9 +77,16 @@ class OrderRepository {
         }.toList()
     }
 
+    fun markOrderHistoryAsCancel(custEmail: String, orderId: String) {
+        val query = "UPDATE ${keyspace}.order_by_customer" +
+                " SET order_status='Order Cancel' WHERE cust_email='$custEmail' AND order_id='${orderId}'"
+        session.execute(query)
+    }
+
     fun deleteReceivedFromCurrentOrder(custEmail: String, orderId: String) {
         val query = "DELETE FROM ${keyspace}.current_order_by_customer" +
                 " WHERE cust_email='$custEmail' AND order_id='$orderId'"
         session.execute(query)
     }
+
 }
