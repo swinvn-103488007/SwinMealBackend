@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class MealSuggestService(private val mealSuggestRepository: MealSuggestRepository) {
-    fun suggestMealForCustomer(totalCalories: Float): List<SuggestMeal> {
-        return mealSuggestRepository.generateSuggestedMeal(totalCalories)
+    fun suggestMealForCustomer(lower: Float, upper: Float): List<SuggestMeal> {
+        return mealSuggestRepository.generateSuggestedMeal(lower, upper)
     }
 }

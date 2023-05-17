@@ -24,16 +24,10 @@ class MealSuggestRepository (@Value("\${astra.secureBundlePath}") private var se
         .build()
 
     private val suggestMealList = mutableListOf<SuggestMeal>()
-    fun generateSuggestedMeal(totalCalories: Float): List<SuggestMeal> {
-//        val upperLimit = 1.05 * totalCalories
-//        val lowerLimit = 0.95 * totalCalories
-        val upperLimit = 2300
-        val lowerLimit = 2090
+    fun generateSuggestedMeal(lowerLimitPerMeal: Float, upperLimitPerMeal: Float): List<SuggestMeal> {
 
-        val upperLimitPerMeal = (2300 / 3)
-        val lowerLimitPerMeal = (2090 / 3)
         runBlocking {
-            findMeals(upperLimitPerMeal.toFloat(), lowerLimitPerMeal.toFloat())
+            findMeals(lowerLimitPerMeal, upperLimitPerMeal)
         }
         println(suggestMealList.size)
         for (meal in suggestMealList) {
@@ -42,9 +36,9 @@ class MealSuggestRepository (@Value("\${astra.secureBundlePath}") private var se
         return suggestMealList
     }
 
-    suspend fun findMeals(upperLimitPerMeal: Float, lowerLimitPerMeal: Float) {
+    suspend fun findMeals(lowerLimitPerMeal: Float, upperLimitPerMeal: Float,) {
         suggestMealList.clear()
-        val food1Category = listOf<String>("bbqs","burgers","steaks","breads","fried-chicken")
+        val food1Category = listOf<String>("bbqs","burgers","steaks","breads","fried-chicken","sandwiches","pizzas")
         coroutineScope {
             launch {
                 val food1UpperCalories = (upperLimitPerMeal + lowerLimitPerMeal) / 3
@@ -80,7 +74,7 @@ class MealSuggestRepository (@Value("\${astra.secureBundlePath}") private var se
 //                    println("Steaks match: ${item.itemName}, Calories: ${item.calories}")
 //                    println("Calories range left: ($lowerCaloriesLeft, $upperCaloriesLeft)\n")
                     launch {
-                       val food2Category = listOf<String>("drinks","ice-cream","desserts")
+                       val food2Category = listOf<String>("drinks","ice-cream","desserts","chocolates")
                        val getSecondFoodQuery = "SELECT * FROM ${keyspace}.menu_full WHERE category='${food2Category.random()}'" +
                                " AND calories > $lowerCaloriesLeft" +
                                 " AND calories < $upperCaloriesLeft limit 5 ALLOW FILTERING"
