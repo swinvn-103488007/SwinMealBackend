@@ -3,20 +3,23 @@ package akathon.cos30017.swin_meal_backend.repository
 import akathon.cos30017.swin_meal_backend.datamodel.MenuItem
 import com.datastax.oss.driver.api.core.CqlSession
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Repository
 import java.io.FileInputStream
 import java.nio.file.Paths
 import kotlin.io.path.Path
 
 @Repository
-class MenuRepository() {
+class MenuRepository(@Value("\${astra.secureBundlePath}") private var secureBundlePath: String,
+                     @Value("\${astra.keyspace}") private var keyspace: String,
+                     @Value("\${astra.clientId}") private var clientId: String,
+                     @Value("\${astra.clientSecret}") private var clientSecret: String) {
 
-    @Value("\${astra.keyspace}")
-    private lateinit var keyspace: String
+    private val connectionBundle = ClassPathResource(secureBundlePath).inputStream
     private var session = CqlSession.builder()
-            .withCloudSecureConnectBundle(Paths.get("E:/spring2023/connection_bundles/secure-connect-swinmealdb.zip"))
-            .withAuthCredentials("AcRCBgaqoLkRzpruuQKQWpdS", "lXLR2SszZgnO4JiF,,ugKfELqmXwP74jR4_-Qq-T,f9P4OKRnoWeB0zOos,T0qg0+85KcW3MUdmZY1Zj3sC4x3dSTZZM8vXz0Ki08J_R4MHfQS9rGHR8twLI7NWfql2Q")
-            .build()
+        .withCloudSecureConnectBundle(connectionBundle)
+        .withAuthCredentials(clientId, clientSecret)
+        .build()
 
     fun getAllMenu() : List<MenuItem> {
         val query = "SELECT * FROM $keyspace.menu_full"
