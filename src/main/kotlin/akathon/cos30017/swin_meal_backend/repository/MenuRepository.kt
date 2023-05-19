@@ -47,7 +47,7 @@ class MenuRepository(@Value("\${astra.secureBundlePath}") private var secureBund
         val fullMenuList = mutableListOf<MenuItem>()
         val categories = listOf<String>("bbqs","burgers","steaks","breads","fried-chicken","drinks","ice-cream",
                                         "desserts","sausages","chocolates","sandwiches","pizzas")
-//        val query = "SELECT * FROM $keyspace.menu_full limit 400"
+//        val query = "SELECT * FROM $keyspace.menu_full"
         runBlocking {
             coroutineScope {
                 for (category in categories) {

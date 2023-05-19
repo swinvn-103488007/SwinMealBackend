@@ -1,6 +1,6 @@
 package akathon.cos30017.swin_meal_backend.controllers
 
-import akathon.cos30017.swin_meal_backend.RequestWrapper
+import akathon.cos30017.swin_meal_backend.datamodel.RequestWrapper
 import akathon.cos30017.swin_meal_backend.datamodel.CurrentOrderItem
 import akathon.cos30017.swin_meal_backend.datamodel.OrderHistoryItem
 import akathon.cos30017.swin_meal_backend.services.OrderService
