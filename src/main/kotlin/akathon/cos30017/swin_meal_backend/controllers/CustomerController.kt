@@ -24,8 +24,6 @@ class CustomerController(private val customerService: CustomerService) {
 
         // Debug message
         println("Received customer email: $email")
-        println("Received customer password: $password")
-
         return customerService.validateLoginRequest(email, password)
     }
 

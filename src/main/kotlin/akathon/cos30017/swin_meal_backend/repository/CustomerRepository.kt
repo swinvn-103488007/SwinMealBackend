@@ -5,7 +5,6 @@ import com.datastax.oss.driver.api.core.CqlSession
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Repository
-import java.nio.file.Paths
 
 @Repository
 class CustomerRepository(@Value("\${astra.secureBundlePath}") private var secureBundlePath: String,
